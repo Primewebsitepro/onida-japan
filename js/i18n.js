@@ -172,6 +172,21 @@ const I18N = {
     "footer.contact": "Contact",
     "footer.rights": "All rights reserved.",
     "footer.devby": "Website Design & Development by",
+    "product.brand": "Brand",
+    "aria.menu": "Menu",
+    "aria.prev": "Previous slide",
+    "aria.next": "Next slide",
+    "aria.slide1": "Slide 1",
+    "aria.slide2": "Slide 2",
+    "aria.slide3": "Slide 3",
+    "aria.breadcrumb": "Breadcrumb",
+    "aria.thumb1": "Full view",
+    "aria.thumb2": "Upright and brace detail",
+    "aria.thumb3": "Slotted arm detail",
+    "alt.home.appliances": "Onida Japan home appliances",
+    "alt.about.hero": "Onida Japan air conditioning in a Panamanian home",
+    "alt.about.story": "Onida Japan — Technology Beyond Imagination",
+    "alt.pd.main": "Compressor stand for air conditioning, white steel bracket pair",
     "addr.office": "Office 406",
     "footer.cat1": "Home Appliances",
     "footer.cat2": "TV & Video",
@@ -351,6 +366,21 @@ const I18N = {
     "footer.contact": "Contacto",
     "footer.rights": "Todos los derechos reservados.",
     "footer.devby": "Diseño y Desarrollo Web por",
+    "product.brand": "Marca",
+    "aria.menu": "Menú",
+    "aria.prev": "Diapositiva anterior",
+    "aria.next": "Diapositiva siguiente",
+    "aria.slide1": "Diapositiva 1",
+    "aria.slide2": "Diapositiva 2",
+    "aria.slide3": "Diapositiva 3",
+    "aria.breadcrumb": "Ruta de navegación",
+    "aria.thumb1": "Vista completa",
+    "aria.thumb2": "Detalle del montante y el refuerzo",
+    "aria.thumb3": "Detalle del brazo ranurado",
+    "alt.home.appliances": "Electrodomésticos Onida Japan",
+    "alt.about.hero": "Aire acondicionado Onida Japan en un hogar panameño",
+    "alt.about.story": "Onida Japan — Tecnología Más Allá de la Imaginación",
+    "alt.pd.main": "Soporte para compresor de aire acondicionado, par de soportes de acero blanco",
     "addr.office": "Oficina 406",
     "footer.cat1": "Electrodomésticos",
     "footer.cat2": "TV y Video",
@@ -365,7 +395,7 @@ const I18N = {
 };
 
 function getLang() {
-  try { return localStorage.getItem("onida_lang") || "en"; } catch (e) { return "en"; }
+  try { return localStorage.getItem("onida_lang") || "es"; } catch (e) { return "es"; }
 }
 
 function setLang(lang) {
@@ -383,6 +413,16 @@ function applyLang(lang) {
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     const key = el.getAttribute("data-i18n");
     if (dict[key] !== undefined) el.textContent = dict[key];
+  });
+
+  document.querySelectorAll("[data-i18n-aria]").forEach((el) => {
+    const key = el.getAttribute("data-i18n-aria");
+    if (dict[key] !== undefined) el.setAttribute("aria-label", dict[key]);
+  });
+
+  document.querySelectorAll("[data-i18n-alt]").forEach((el) => {
+    const key = el.getAttribute("data-i18n-alt");
+    if (dict[key] !== undefined) el.setAttribute("alt", dict[key]);
   });
 
   document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {

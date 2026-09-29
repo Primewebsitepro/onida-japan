@@ -28,12 +28,18 @@ function buildProductCard(product, categoryLabel) {
     '<div class="product-card__body">' +
       '<span class="product-card__cat">' + escapeHtml(categoryLabel) + '</span>' +
       title +
+      brandLine(product, dict) +
       '<div class="product-card__actions">' +
         '<a class="btn btn--ghost" href="tel:+' + WHATSAPP_NUMBER + '">' + ICON_CALL + '<span data-i18n="product.call">' + (dict["product.call"] || "Call") + '</span></a>' +
         '<a class="btn btn--whatsapp" target="_blank" rel="noopener" href="' + waLink(msg) + '">' + ICON_WA + '<span data-i18n="product.whatsapp">' + (dict["product.whatsapp"] || "WhatsApp") + '</span></a>' +
       '</div>' +
     '</div>';
   return el;
+}
+
+function brandLine(product, dict) {
+  if (!product.brand) return "";
+  return '<span class="product-card__brand"><span data-i18n="product.brand">' + (dict["product.brand"] || "Brand") + '</span>: <strong>' + escapeHtml(product.brand) + '</strong></span>';
 }
 
 function escapeHtml(str) {
@@ -85,6 +91,7 @@ function buildSpotlightCard(product, categoryLabel) {
     '<div class="spotlight-card__body">' +
       '<span class="spotlight-card__cat">' + escapeHtml(categoryLabel) + '</span>' +
       spotTitle +
+      brandLine(product, dict) +
       '<div class="spotlight-card__actions">' +
         '<a class="btn btn--ghost" href="tel:+' + WHATSAPP_NUMBER + '">' + ICON_CALL + '</a>' +
         '<a class="btn btn--whatsapp" target="_blank" rel="noopener" href="' + waLink(msg) + '">' + ICON_WA + '</a>' +

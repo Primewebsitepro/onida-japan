@@ -9,6 +9,7 @@ const CATALOG = [
         "id": "accesorios-1",
         "name": "Soporte para compresor (aa), blanco",
         "image": "https://www.tiendaspremier.com/content/prod/portada/wm-9517-1777934377.jpg",
+        "brand": "Onida Japan",
         "url": "product-wm-9517.html"
       },
       {
