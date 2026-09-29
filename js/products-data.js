@@ -8,7 +8,8 @@ const CATALOG = [
       {
         "id": "accesorios-1",
         "name": "Soporte para compresor (aa), blanco",
-        "image": "https://www.tiendaspremier.com/content/prod/portada/wm-9517-1777934377.jpg"
+        "image": "https://www.tiendaspremier.com/content/prod/portada/wm-9517-1777934377.jpg",
+        "url": "product-wm-9517.html"
       },
       {
         "id": "accesorios-2",

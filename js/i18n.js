@@ -67,7 +67,7 @@ const I18N = {
 
     "products.eyebrow": "Full Catalog",
     "products.title": "Product Categories",
-    "products.lead": "Tap Call or WhatsApp on any item to enquire — no product page needed.",
+    "products.lead": "Tap Call or WhatsApp on any item to enquire, or open a product to see its full details.",
     "filter.all": "All",
     "empty.title": "No products in this category yet",
     "empty.lead": "New items are added regularly — message us on WhatsApp and we'll help you find what you need.",
@@ -123,6 +123,34 @@ const I18N = {
     "faq.q8": "Do you ship outside Panama?",
     "faq.a8": "Right now we serve customers within Panama. For special requests, reach out on WhatsApp and we'll see how we can help.",
 
+    "pd.title": "Compressor Stand (AC), White",
+    "pd.sku": "Product code",
+    "pd.cat.value": "Accessories",
+    "pd.enquire.msg": "Hello! I'd like to enquire about: Compressor Stand (AC), White — code WM-9517",
+    "pd.fact.steel": "Steel",
+    "pd.desc": "A pair of wall-mounting brackets for outdoor air-conditioning condenser units. Built from steel with a white protective coating, with pre-drilled holes along the upright and slotted openings along the arm so the unit can be positioned precisely.",
+    "pd.price.note": "Price on request — message us for current pricing, stock and delivery.",
+    "pd.action.enquire": "Send an Enquiry",
+    "pd.specs.title": "Specifications",
+    "pd.features.title": "Features",
+    "pd.spec.category": "Category",
+    "pd.spec.dimensions": "Dimensions",
+    "pd.spec.load": "Maximum load",
+    "pd.spec.material": "Material",
+    "pd.spec.color": "Colour",
+    "pd.spec.supplied": "Supplied as",
+    "pd.val.material": "Steel with white protective coating",
+    "pd.val.color": "White",
+    "pd.val.supplied": "Pair of brackets (as pictured)",
+    "pd.f1": "Rated to support up to 220 kg",
+    "pd.f2": "450 × 550 mm bracket dimensions",
+    "pd.f3": "Steel construction with a white protective coating",
+    "pd.f4": "Pre-drilled mounting holes along the full upright",
+    "pd.f5": "Slotted arm lets you adjust where the unit sits",
+    "pd.f6": "Diagonal brace bolted to the upright for rigidity",
+    "pd.enquiry.title": "Enquire about this product",
+    "pd.enquiry.lead": "Send us the details and we will reply on WhatsApp with pricing and availability.",
+
     "contact.eyebrow": "Get in Touch",
     "contact.title": "Contact Us",
     "contact.lead": "Reach us by phone, WhatsApp or email — or send a message below and we'll open WhatsApp with it ready to send.",
@@ -144,6 +172,16 @@ const I18N = {
     "footer.contact": "Contact",
     "footer.rights": "All rights reserved.",
     "footer.devby": "Website Design & Development by",
+    "addr.office": "Office 406",
+    "footer.cat1": "Home Appliances",
+    "footer.cat2": "TV & Video",
+    "footer.cat3": "Audio",
+    "footer.cat4": "Major Appliances",
+    "title.home": "Onida Japan Panamá — Electronics Distributor",
+    "title.about": "About Us — Onida Japan Panamá",
+    "title.products": "Products — Onida Japan Panamá",
+    "title.faq": "FAQ — Onida Japan Panamá",
+    "title.contact": "Contact — Onida Japan Panamá",
   },
   es: {
     "nav.home": "Inicio",
@@ -208,7 +246,7 @@ const I18N = {
 
     "products.eyebrow": "Catálogo Completo",
     "products.title": "Categorías de Productos",
-    "products.lead": "Toca Llamar o WhatsApp en cualquier producto para consultar — sin páginas de producto.",
+    "products.lead": "Toca Llamar o WhatsApp en cualquier producto para consultar, o abre un producto para ver todos sus detalles.",
     "filter.all": "Todos",
     "empty.title": "Aún no hay productos en esta categoría",
     "empty.lead": "Agregamos artículos nuevos con frecuencia — escríbenos por WhatsApp y te ayudamos a encontrar lo que buscas.",
@@ -264,6 +302,34 @@ const I18N = {
     "faq.q8": "¿Hacen envíos fuera de Panamá?",
     "faq.a8": "Por ahora atendemos solo dentro de Panamá. Para solicitudes especiales, escríbenos por WhatsApp y vemos cómo podemos ayudarte.",
 
+    "pd.title": "Soporte para compresor (aa), blanco",
+    "pd.sku": "Código de producto",
+    "pd.cat.value": "Accesorios",
+    "pd.enquire.msg": "¡Hola! Quisiera consultar sobre: Soporte para compresor (aa), blanco — código WM-9517",
+    "pd.fact.steel": "Acero",
+    "pd.desc": "Par de soportes de pared para unidades condensadoras de aire acondicionado. Fabricados en acero con recubrimiento blanco protector, con perforaciones a lo largo del montante y ranuras en el brazo para posicionar la unidad con precisión.",
+    "pd.price.note": "Precio a consultar — escríbenos para conocer precio, disponibilidad y entrega.",
+    "pd.action.enquire": "Enviar Consulta",
+    "pd.specs.title": "Especificaciones",
+    "pd.features.title": "Características",
+    "pd.spec.category": "Categoría",
+    "pd.spec.dimensions": "Dimensiones",
+    "pd.spec.load": "Carga máxima",
+    "pd.spec.material": "Material",
+    "pd.spec.color": "Color",
+    "pd.spec.supplied": "Se entrega como",
+    "pd.val.material": "Acero con recubrimiento blanco protector",
+    "pd.val.color": "Blanco",
+    "pd.val.supplied": "Par de soportes (como se muestra)",
+    "pd.f1": "Soporta hasta 220 kg",
+    "pd.f2": "Dimensiones de 450 × 550 mm",
+    "pd.f3": "Construcción en acero con recubrimiento blanco protector",
+    "pd.f4": "Perforaciones de montaje a lo largo de todo el montante",
+    "pd.f5": "Brazo ranurado para ajustar la posición de la unidad",
+    "pd.f6": "Refuerzo diagonal atornillado al montante para mayor rigidez",
+    "pd.enquiry.title": "Consulta sobre este producto",
+    "pd.enquiry.lead": "Envíanos los datos y te responderemos por WhatsApp con precio y disponibilidad.",
+
     "contact.eyebrow": "Contáctanos",
     "contact.title": "Contacto",
     "contact.lead": "Contáctanos por teléfono, WhatsApp o correo — o envía un mensaje abajo y abriremos WhatsApp con él listo para enviar.",
@@ -285,6 +351,16 @@ const I18N = {
     "footer.contact": "Contacto",
     "footer.rights": "Todos los derechos reservados.",
     "footer.devby": "Diseño y Desarrollo Web por",
+    "addr.office": "Oficina 406",
+    "footer.cat1": "Electrodomésticos",
+    "footer.cat2": "TV y Video",
+    "footer.cat3": "Audio",
+    "footer.cat4": "Línea Blanca",
+    "title.home": "Onida Japan Panamá — Distribuidor de Electrónica",
+    "title.about": "Nosotros — Onida Japan Panamá",
+    "title.products": "Productos — Onida Japan Panamá",
+    "title.faq": "Preguntas Frecuentes — Onida Japan Panamá",
+    "title.contact": "Contacto — Onida Japan Panamá",
   }
 };
 
@@ -300,6 +376,9 @@ function setLang(lang) {
 function applyLang(lang) {
   const dict = I18N[lang] || I18N.en;
   document.documentElement.setAttribute("lang", lang === "es" ? "es" : "en");
+
+  const titleKey = document.documentElement.getAttribute("data-title-key");
+  if (titleKey && dict[titleKey] !== undefined) document.title = dict[titleKey];
 
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     const key = el.getAttribute("data-i18n");

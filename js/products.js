@@ -11,13 +11,23 @@ function buildProductCard(product, categoryLabel) {
   const dict = I18N[lang] || I18N.en;
   const msg = (dict["product.enquire.msg"] || "") + product.name;
 
+  const img = '<img src="' + product.image + '" alt="' + escapeHtml(product.name) + '" loading="lazy">';
+  const name = escapeHtml(product.name);
+  // Only products that have a detail page become links
+  const media = product.url
+    ? '<a class="product-card__media product-card__media--link" href="' + product.url + '">' + img + '</a>'
+    : '<div class="product-card__media">' + img + '</div>';
+  const title = product.url
+    ? '<a class="product-card__name product-card__name--link" href="' + product.url + '">' + name + '</a>'
+    : '<span class="product-card__name">' + name + '</span>';
+
   const el = document.createElement("div");
   el.className = "product-card";
   el.innerHTML =
-    '<div class="product-card__media"><img src="' + product.image + '" alt="' + escapeHtml(product.name) + '" loading="lazy"></div>' +
+    media +
     '<div class="product-card__body">' +
       '<span class="product-card__cat">' + escapeHtml(categoryLabel) + '</span>' +
-      '<span class="product-card__name">' + escapeHtml(product.name) + '</span>' +
+      title +
       '<div class="product-card__actions">' +
         '<a class="btn btn--ghost" href="tel:+' + WHATSAPP_NUMBER + '">' + ICON_CALL + '<span data-i18n="product.call">' + (dict["product.call"] || "Call") + '</span></a>' +
         '<a class="btn btn--whatsapp" target="_blank" rel="noopener" href="' + waLink(msg) + '">' + ICON_WA + '<span data-i18n="product.whatsapp">' + (dict["product.whatsapp"] || "WhatsApp") + '</span></a>' +
@@ -58,13 +68,23 @@ function buildSpotlightCard(product, categoryLabel) {
   const dict = I18N[lang] || I18N.en;
   const msg = (dict["product.enquire.msg"] || "") + product.name;
 
+  const spotImg = '<img src="' + product.image + '" alt="' + escapeHtml(product.name) + '" loading="lazy">';
+  const badge = '<span class="spotlight-card__badge">' + escapeHtml(categoryLabel) + '</span>';
+  const spotName = escapeHtml(product.name);
+  const spotMedia = product.url
+    ? '<a class="spotlight-card__media" href="' + product.url + '">' + badge + spotImg + '</a>'
+    : '<div class="spotlight-card__media">' + badge + spotImg + '</div>';
+  const spotTitle = product.url
+    ? '<a class="spotlight-card__name product-card__name--link" href="' + product.url + '">' + spotName + '</a>'
+    : '<span class="spotlight-card__name">' + spotName + '</span>';
+
   const el = document.createElement("div");
   el.className = "spotlight-card";
   el.innerHTML =
-    '<div class="spotlight-card__media"><span class="spotlight-card__badge">' + escapeHtml(categoryLabel) + '</span><img src="' + product.image + '" alt="' + escapeHtml(product.name) + '" loading="lazy"></div>' +
+    spotMedia +
     '<div class="spotlight-card__body">' +
       '<span class="spotlight-card__cat">' + escapeHtml(categoryLabel) + '</span>' +
-      '<span class="spotlight-card__name">' + escapeHtml(product.name) + '</span>' +
+      spotTitle +
       '<div class="spotlight-card__actions">' +
         '<a class="btn btn--ghost" href="tel:+' + WHATSAPP_NUMBER + '">' + ICON_CALL + '</a>' +
         '<a class="btn btn--whatsapp" target="_blank" rel="noopener" href="' + waLink(msg) + '">' + ICON_WA + '</a>' +
