@@ -44,8 +44,36 @@
 
   <section class="section">
     <div class="container">
-      <div class="filter-bar" id="filter-bar"></div>
-      <div class="product-grid" id="product-grid"></div>
+      <div class="catalog">
+        <button type="button" class="btn btn--ghost btn--sm filter-toggle" id="filter-toggle">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+              <span data-i18n="catalog.filters">Filtros</span>
+            </button>
+        <aside class="catalog__side" id="catalog-side" aria-label="Filtros" data-i18n-aria="catalog.filters">
+          <div class="catalog__side-head">
+            <h2 data-i18n="catalog.filters">Filtros</h2>
+            <button type="button" class="filter-clear" id="filter-clear" data-i18n="catalog.clear">Limpiar filtros</button>
+          </div>
+          <div class="filter-group">
+            <h3 data-i18n="catalog.categories">Categorías</h3>
+            <div id="filter-cats"></div>
+          </div>
+          <div class="filter-group">
+            <h3 data-i18n="product.brand">Marca</h3>
+            <div id="filter-brands"></div>
+          </div>
+        </aside>
+
+        <div class="catalog__main">
+          <div class="catalog__bar">
+            <p class="catalog__count" id="catalog-count"></p>
+          </div>
+          <div class="product-grid" id="product-grid"></div>
+          <div class="loadmore-wrap">
+            <button type="button" class="btn btn--ghost" id="load-more" data-i18n="catalog.loadmore">Cargar más productos</button>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 </main>
@@ -81,7 +109,7 @@
         <ul>
           <li>Peninsula Center, <span data-i18n="addr.office">Oficina 406</span><br>Costa del Este, Panamá 🇵🇦</li>
           <li><a href="tel:+50765129615">+507 6512-9615</a></li>
-          <li><a href="mailto:sales@onida.com.pa">sales@onida.com.pa</a></li>
+          <li><a href="mailto:director@onida.shop">director@onida.shop</a></li>
         </ul>
       </div>
     </div>

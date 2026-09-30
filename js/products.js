@@ -9,7 +9,7 @@ const ICON_WA = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.47 14
 function buildProductCard(product, categoryLabel) {
   const lang = getLang();
   const dict = I18N[lang] || I18N.en;
-  const msg = (dict["product.enquire.msg"] || "") + product.name;
+  const msg = (dict["product.enquire.msg"] || "") + product.name + (product.code ? (dict["pd.msg.code"] || " — ") + product.code : "");
 
   const img = '<img src="' + product.image + '" alt="' + escapeHtml(product.name) + '" loading="lazy">';
   const name = escapeHtml(product.name);
@@ -64,7 +64,7 @@ function renderCategoryTiles() {
     a.innerHTML =
       (thumb ? '<img class="cat-card__thumb" src="' + thumb + '" alt="">' : '<div class="cat-card__thumb"></div>') +
       '<div><div class="cat-card__name">' + escapeHtml(catLabel(cat, lang)) + '</div>' +
-      '<div class="cat-card__count">' + cat.products.length + (lang === "es" ? " productos" : " products") + '</div></div>';
+      '<div class="cat-card__count">' + cat.products.length + (lang === "es" ? (cat.products.length === 1 ? " producto" : " productos") : (cat.products.length === 1 ? " product" : " products")) + '</div></div>';
     wrap.appendChild(a);
   });
 }
@@ -72,7 +72,7 @@ function renderCategoryTiles() {
 function buildSpotlightCard(product, categoryLabel) {
   const lang = getLang();
   const dict = I18N[lang] || I18N.en;
-  const msg = (dict["product.enquire.msg"] || "") + product.name;
+  const msg = (dict["product.enquire.msg"] || "") + product.name + (product.code ? (dict["pd.msg.code"] || " — ") + product.code : "");
 
   const spotImg = '<img src="' + product.image + '" alt="' + escapeHtml(product.name) + '" loading="lazy">';
   const badge = '<span class="spotlight-card__badge">' + escapeHtml(categoryLabel) + '</span>';
@@ -109,6 +109,33 @@ function renderSpotlight() {
   CATALOG.forEach((cat) => {
     if (cat.products[0]) row.appendChild(buildSpotlightCard(cat.products[0], catLabel(cat, lang)));
   });
+  updateSpotlightArrows();
+}
+
+// ---------------- Home: featured row arrows ----------------
+function updateSpotlightArrows() {
+  const row = document.getElementById("spotlight-row");
+  const prev = document.querySelector(".spotlight-arrow--prev");
+  const next = document.querySelector(".spotlight-arrow--next");
+  if (!row || !prev || !next) return;
+  // the row rests at its left padding (where the first card snaps), so compare against that
+  const pad = parseFloat(getComputedStyle(row).paddingLeft) || 0;
+  prev.disabled = row.scrollLeft <= pad + 2;
+  next.disabled = row.scrollLeft + row.clientWidth >= row.scrollWidth - 2;
+}
+
+function initSpotlightArrows() {
+  const row = document.getElementById("spotlight-row");
+  const prev = document.querySelector(".spotlight-arrow--prev");
+  const next = document.querySelector(".spotlight-arrow--next");
+  if (!row || !prev || !next) return;
+  const page = () => Math.max(row.clientWidth * 0.85, 200);
+  prev.addEventListener("click", () => row.scrollBy({ left: -page(), behavior: "smooth" }));
+  next.addEventListener("click", () => row.scrollBy({ left: page(), behavior: "smooth" }));
+  row.addEventListener("scroll", updateSpotlightArrows, { passive: true });
+  row.addEventListener("scrollend", updateSpotlightArrows);
+  window.addEventListener("resize", updateSpotlightArrows);
+  updateSpotlightArrows();
 }
 
 // ---------------- About page: category chip list ----------------
@@ -126,39 +153,105 @@ function renderCategoryChips() {
   });
 }
 
-// ---------------- Products page ----------------
-let currentFilter = "all";
+// ---------------- Products page: sidebar filters ----------------
+const PAGE_SIZE = 24;
+const catalogState = { cats: new Set(), brands: new Set(), shown: PAGE_SIZE, ready: false };
+let FLAT_CATALOG = null;
 
-function renderFilterBar() {
-  const bar = document.getElementById("filter-bar");
-  if (!bar) return;
-  const lang = getLang();
-  const dict = I18N[lang] || I18N.en;
-  bar.innerHTML = "";
-
-  const allChip = document.createElement("button");
-  allChip.className = "filter-chip" + (currentFilter === "all" ? " is-active" : "");
-  allChip.textContent = dict["filter.all"] || "All";
-  allChip.addEventListener("click", () => setFilter("all"));
-  bar.appendChild(allChip);
-
-  CATALOG.forEach((cat) => {
-    const chip = document.createElement("button");
-    chip.className = "filter-chip" + (currentFilter === cat.slug ? " is-active" : "");
-    chip.textContent = catLabel(cat, lang);
-    chip.addEventListener("click", () => setFilter(cat.slug));
-    bar.appendChild(chip);
-  });
+function flatCatalog() {
+  if (!FLAT_CATALOG) {
+    FLAT_CATALOG = [];
+    CATALOG.forEach((cat) => cat.products.forEach((p) => FLAT_CATALOG.push({ p: p, cat: cat })));
+  }
+  return FLAT_CATALOG;
 }
 
-function setFilter(slug) {
-  currentFilter = slug;
+function fmt(str, vars) {
+  return String(str).replace(/\{(\w+)\}/g, (m, k) => (vars[k] !== undefined ? vars[k] : m));
+}
+
+function brandCounts() {
+  const counts = {};
+  flatCatalog().forEach((x) => { if (x.p.brand) counts[x.p.brand] = (counts[x.p.brand] || 0) + 1; });
+  return Object.keys(counts)
+    .sort((a, b) => counts[b] - counts[a] || a.localeCompare(b))
+    .map((name) => ({ name: name, count: counts[name] }));
+}
+
+function filteredProducts() {
+  return flatCatalog().filter((x) =>
+    (catalogState.cats.size === 0 || catalogState.cats.has(x.cat.slug)) &&
+    (catalogState.brands.size === 0 || catalogState.brands.has(x.p.brand)));
+}
+
+function syncUrl() {
   const url = new URL(window.location.href);
-  if (slug === "all") url.searchParams.delete("cat");
-  else url.searchParams.set("cat", slug);
+  const c = Array.from(catalogState.cats);
+  const b = Array.from(catalogState.brands);
+  if (c.length) url.searchParams.set("cat", c.join(",")); else url.searchParams.delete("cat");
+  if (b.length) url.searchParams.set("brand", b.join(",")); else url.searchParams.delete("brand");
   window.history.replaceState({}, "", url);
-  renderFilterBar();
-  renderProductGrid();
+}
+
+function toggleInSet(set, value, on) {
+  if (on) set.add(value); else set.delete(value);
+}
+
+function filterOption(label, count, checked, onChange) {
+  const l = document.createElement("label");
+  l.className = "filter-option" + (checked ? " is-checked" : "");
+  const input = document.createElement("input");
+  input.type = "checkbox";
+  input.checked = checked;
+  input.addEventListener("change", onChange);
+  const text = document.createElement("span");
+  text.textContent = label;
+  const num = document.createElement("span");
+  num.className = "filter-option__count";
+  num.textContent = count;
+  l.appendChild(input);
+  l.appendChild(text);
+  l.appendChild(num);
+  return l;
+}
+
+function renderFilters() {
+  const catsWrap = document.getElementById("filter-cats");
+  const brandsWrap = document.getElementById("filter-brands");
+  if (!catsWrap || !brandsWrap) return;
+  const lang = getLang();
+  const dict = I18N[lang] || I18N.en;
+  catsWrap.innerHTML = "";
+  brandsWrap.innerHTML = "";
+
+  catsWrap.appendChild(filterOption(dict["catalog.all"] || "All", flatCatalog().length, catalogState.cats.size === 0, () => {
+    catalogState.cats.clear();
+    applyFilters();
+  }));
+  CATALOG.forEach((cat) => {
+    catsWrap.appendChild(filterOption(catLabel(cat, lang), cat.products.length, catalogState.cats.has(cat.slug), (e) => {
+      toggleInSet(catalogState.cats, cat.slug, e.target.checked);
+      applyFilters();
+    }));
+  });
+  brandCounts().forEach((b) => {
+    brandsWrap.appendChild(filterOption(b.name, b.count, catalogState.brands.has(b.name), (e) => {
+      toggleInSet(catalogState.brands, b.name, e.target.checked);
+      applyFilters();
+    }));
+  });
+
+  const clear = document.getElementById("filter-clear");
+  if (clear) clear.disabled = catalogState.cats.size === 0 && catalogState.brands.size === 0;
+}
+
+function updateCatalogFooter(list, visibleCount) {
+  const dict = I18N[getLang()] || I18N.en;
+  const count = document.getElementById("catalog-count");
+  const key = list.length === 1 && dict["catalog.showing.one"] ? "catalog.showing.one" : "catalog.showing";
+  if (count) count.textContent = fmt(dict[key] || "{shown} / {total}", { shown: visibleCount, total: list.length });
+  const more = document.getElementById("load-more");
+  if (more) more.style.display = visibleCount < list.length ? "" : "none";
 }
 
 function renderProductGrid() {
@@ -166,33 +259,61 @@ function renderProductGrid() {
   if (!grid) return;
   const lang = getLang();
   const dict = I18N[lang] || I18N.en;
+  const list = filteredProducts();
+  const visible = list.slice(0, catalogState.shown);
   grid.innerHTML = "";
+  visible.forEach((x) => grid.appendChild(buildProductCard(x.p, catLabel(x.cat, lang))));
 
-  const cats = currentFilter === "all" ? CATALOG : CATALOG.filter((c) => c.slug === currentFilter);
-  let total = 0;
-
-  cats.forEach((cat) => {
-    cat.products.forEach((p) => {
-      grid.appendChild(buildProductCard(p, catLabel(cat, lang)));
-      total++;
-    });
-  });
-
-  if (total === 0) {
+  if (list.length === 0) {
     const empty = document.createElement("div");
     empty.className = "empty-state";
     empty.innerHTML =
-      '<h3>' + (dict["empty.title"] || "No products yet") + '</h3>' +
-      '<p>' + (dict["empty.lead"] || "") + '</p>';
+      '<h3>' + (dict["catalog.none.title"] || "") + '</h3>' +
+      '<p>' + (dict["catalog.none.lead"] || "") + '</p>';
     grid.appendChild(empty);
   }
+  updateCatalogFooter(list, visible.length);
+}
+
+function loadMoreProducts() {
+  const grid = document.getElementById("product-grid");
+  if (!grid) return;
+  const lang = getLang();
+  const list = filteredProducts();
+  const start = catalogState.shown;
+  catalogState.shown += PAGE_SIZE;
+  list.slice(start, catalogState.shown).forEach((x) => grid.appendChild(buildProductCard(x.p, catLabel(x.cat, lang))));
+  updateCatalogFooter(list, Math.min(catalogState.shown, list.length));
+}
+
+function applyFilters() {
+  catalogState.shown = PAGE_SIZE;
+  syncUrl();
+  renderFilters();
+  renderProductGrid();
 }
 
 function initProductsPage() {
   const params = new URLSearchParams(window.location.search);
-  const cat = params.get("cat");
-  if (cat && CATALOG.some((c) => c.slug === cat)) currentFilter = cat;
-  renderFilterBar();
+  const validCats = new Set(CATALOG.map((c) => c.slug));
+  (params.get("cat") || "").split(",").forEach((c) => { if (validCats.has(c)) catalogState.cats.add(c); });
+  const validBrands = new Set(brandCounts().map((b) => b.name));
+  (params.get("brand") || "").split(",").forEach((b) => { if (validBrands.has(b)) catalogState.brands.add(b); });
+
+  const more = document.getElementById("load-more");
+  if (more) more.addEventListener("click", loadMoreProducts);
+  const clear = document.getElementById("filter-clear");
+  if (clear) clear.addEventListener("click", () => {
+    catalogState.cats.clear();
+    catalogState.brands.clear();
+    applyFilters();
+  });
+  const toggle = document.getElementById("filter-toggle");
+  const side = document.getElementById("catalog-side");
+  if (toggle && side) toggle.addEventListener("click", () => side.classList.toggle("is-open"));
+
+  catalogState.ready = true;
+  renderFilters();
   renderProductGrid();
 }
 
@@ -201,8 +322,8 @@ window.onLangChange = function () {
   if (document.getElementById("cat-grid")) renderCategoryTiles();
   if (document.getElementById("spotlight-row")) renderSpotlight();
   if (document.getElementById("about-cat-chips")) renderCategoryChips();
-  if (document.getElementById("product-grid")) {
-    renderFilterBar();
+  if (document.getElementById("product-grid") && catalogState.ready) {
+    renderFilters();
     renderProductGrid();
   }
 };
@@ -210,6 +331,7 @@ window.onLangChange = function () {
 document.addEventListener("DOMContentLoaded", () => {
   renderCategoryTiles();
   renderSpotlight();
+  initSpotlightArrows();
   renderCategoryChips();
   if (document.getElementById("product-grid")) initProductsPage();
 });
