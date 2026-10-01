@@ -1,4 +1,33 @@
 // ---------------------------------------------------------------------------
+// Smooth (inertia) scrolling for mouse wheel / trackpad — powered by Lenis
+// ---------------------------------------------------------------------------
+(function () {
+  if (typeof window.Lenis !== "function") return;
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const lenis = new window.Lenis({
+    lerp: 0.09,            // lower = smoother / longer glide
+    wheelMultiplier: 1,
+    smoothWheel: true,
+    anchors: { offset: -90 },
+  });
+  window.siteScroll = lenis;
+
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+  requestAnimationFrame(raf);
+
+  // panels that scroll on their own keep native scrolling
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".catalog__side, .spotlight-row, textarea").forEach((el) => {
+      el.setAttribute("data-lenis-prevent", "");
+    });
+  });
+})();
+
+// ---------------------------------------------------------------------------
 // Scroll reveal: content and images fade/slide in as they enter the viewport
 // ---------------------------------------------------------------------------
 document.addEventListener("DOMContentLoaded", () => {

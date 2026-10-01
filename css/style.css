@@ -1583,3 +1583,10 @@ section[id], [id="enquiry"] { scroll-margin-top: 90px; }
 .product-card__actions .btn { min-width: 0; padding: 10px 8px; }
 .product-card__body { padding: 20px; }
 .pd-panels { align-items: start; }
+
+/* ---------- Smooth scrolling (Lenis) ---------- */
+html.lenis, html.lenis body { height: auto; }
+html.lenis { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: clip; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
