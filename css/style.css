@@ -1284,3 +1284,23 @@ p { margin: 0 0 1em; color: var(--text-muted); }
   .page-head { padding: 40px 0 6px; }
   .footer-bottom { flex-direction: column; align-items: flex-start; gap: 8px; }
 }
+
+/* ---------- "Onida Japan" brand badge on product images ---------- */
+.product-card__media,
+.spotlight-card__media,
+.pd-gallery__main { position: relative; }
+.product-card__media::after,
+.spotlight-card__media::after,
+.pd-gallery__main::after {
+  content: "ONIDA JAPAN";
+  position: absolute;
+  left: 10px; bottom: 10px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #0b0b0b;
+  border-left: 3px solid var(--accent);
+  color: #fff;
+  font-size: 10.5px; font-weight: 700; letter-spacing: .12em; line-height: 1;
+  pointer-events: none;
+}
+.pd-gallery__main::after { left: 16px; bottom: 16px; font-size: 12px; padding: 7px 14px; }
