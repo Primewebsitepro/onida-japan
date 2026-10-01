@@ -91,7 +91,16 @@
     const thumbs = Array.from(document.querySelectorAll(".pd-thumb"));
     thumbs.forEach((t) => {
       t.addEventListener("click", () => {
-        if (mainImg) mainImg.src = t.getAttribute("data-src");
+        const src = t.getAttribute("data-src");
+        if (mainImg && mainImg.getAttribute("src") !== src) {
+          // quick crossfade between gallery images
+          mainImg.style.opacity = "0";
+          setTimeout(() => {
+            mainImg.onload = () => { mainImg.style.opacity = "1"; };
+            mainImg.src = src;
+            if (mainImg.complete) mainImg.style.opacity = "1";
+          }, 180);
+        }
         thumbs.forEach((x) => x.classList.toggle("is-active", x === t));
       });
     });
