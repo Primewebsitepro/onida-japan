@@ -106,9 +106,12 @@ function renderSpotlight() {
   if (!row) return;
   const lang = getLang();
   row.innerHTML = "";
-  CATALOG.forEach((cat) => {
-    if (cat.products[0]) row.appendChild(buildSpotlightCard(cat.products[0], catLabel(cat, lang)));
-  });
+  // two picks per category, interleaved so the row mixes departments
+  for (let i = 0; i < 2; i++) {
+    CATALOG.forEach((cat) => {
+      if (cat.products[i]) row.appendChild(buildSpotlightCard(cat.products[i], catLabel(cat, lang)));
+    });
+  }
   updateSpotlightArrows();
 }
 
